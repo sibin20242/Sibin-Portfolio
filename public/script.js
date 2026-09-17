@@ -137,10 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Typewriter Effect
 const typewriterRoles = [
   'Full Stack Developer',
-  'Frontend Specialist',
-  'Backend Enthusiast',
-  'UI/UX Explorer',
-  'Tech Innovator'
+
 ];
 
 let roleIndex = 0;
@@ -263,6 +260,158 @@ navLinks.forEach(link => {
     }
   });
 });
+
+// Navigation Preview Functionality
+const navPreview = document.getElementById('nav-preview');
+const navPreviewImage = navPreview?.querySelector('.nav-preview-image');
+const navPreviewTitle = navPreview?.querySelector('.nav-preview-title');
+
+// Section preview data
+const sectionPreviews = {
+  hero: {
+    title: 'Home - Welcome',
+    description: 'IT Professional Portfolio',
+    bgColor: 'linear-gradient(135deg, hsl(214 100% 58% / 0.3), hsl(189 100% 48% / 0.2))'
+  },
+  about: {
+    title: 'About Me',
+    description: 'IT Professional & Full Stack Developer',
+    bgColor: 'linear-gradient(135deg, hsl(214 100% 58% / 0.3), hsl(260 85% 68% / 0.2))'
+  },
+  skills: {
+    title: 'Technologies',
+    description: 'Frontend, Backend, Database & Tools',
+    bgColor: 'linear-gradient(135deg, hsl(189 100% 48% / 0.3), hsl(214 100% 58% / 0.2))'
+  },
+  experience: {
+    title: 'Experience',
+    description: 'Professional IT Experience & Projects',
+    bgColor: 'linear-gradient(135deg, hsl(260 85% 68% / 0.3), hsl(214 100% 58% / 0.2))'
+  },
+  projects: {
+    title: 'Projects',
+    description: 'Innovative IT Solutions & Applications',
+    bgColor: 'linear-gradient(135deg, hsl(214 100% 58% / 0.3), hsl(189 100% 48% / 0.2))'
+  },
+  education: {
+    title: 'Education',
+    description: 'Academic Excellence & Qualifications',
+    bgColor: 'linear-gradient(135deg, hsl(189 100% 48% / 0.3), hsl(260 85% 68% / 0.2))'
+  },
+  certificates: {
+    title: 'Certifications',
+    description: 'Professional IT Certifications',
+    bgColor: 'linear-gradient(135deg, hsl(260 85% 68% / 0.3), hsl(214 100% 58% / 0.2))'
+  },
+  contact: {
+    title: 'Contact',
+    description: 'Get in Touch for IT Consulting',
+    bgColor: 'linear-gradient(135deg, hsl(214 100% 58% / 0.3), hsl(189 100% 48% / 0.2))'
+  }
+};
+
+// Function to create section preview
+function createSectionPreview(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section || !navPreview) return null;
+  
+  // Get section preview data
+  const previewData = sectionPreviews[sectionId];
+  if (!previewData) return null;
+  
+  // Create a canvas to capture section preview
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const rect = section.getBoundingClientRect();
+  
+  // Set canvas size (miniature size)
+  canvas.width = 240;
+  canvas.height = 135;
+  
+  // Draw gradient background
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, 'rgba(33, 150, 243, 0.3)');
+  gradient.addColorStop(1, 'rgba(0, 188, 212, 0.2)');
+  ctx.fillStyle = previewData.bgColor || gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Add section title text
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+  ctx.font = 'bold 18px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(previewData.title, canvas.width / 2, canvas.height / 2 - 10);
+  
+  // Add description text
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.font = '11px Inter, sans-serif';
+  ctx.fillText(previewData.description, canvas.width / 2, canvas.height / 2 + 10);
+  
+  return canvas.toDataURL();
+}
+
+// Function to show preview
+function showNavPreview(link) {
+  if (!navPreview || !navPreviewImage || !navPreviewTitle) return;
+  
+  const sectionId = link.getAttribute('data-section');
+  if (!sectionId) return;
+  
+  const previewData = sectionPreviews[sectionId];
+  if (!previewData) return;
+  
+  // Create preview image
+  const previewImage = createSectionPreview(sectionId);
+  if (previewImage) {
+    navPreviewImage.style.backgroundImage = `url(${previewImage})`;
+  } else {
+    // Fallback to gradient background
+    navPreviewImage.style.background = previewData.bgColor || 'linear-gradient(135deg, hsl(214 100% 58% / 0.3), hsl(189 100% 48% / 0.2))';
+  }
+  
+  // Update title
+  navPreviewTitle.textContent = previewData.title;
+  
+  // Position preview relative to nav link
+  const linkRect = link.getBoundingClientRect();
+  const navContent = link.closest('.nav-content');
+  const navContentRect = navContent?.getBoundingClientRect();
+  
+  if (navContentRect) {
+    const relativeLeft = linkRect.left - navContentRect.left + (linkRect.width / 2);
+    navPreview.style.left = `${relativeLeft}px`;
+    navPreview.style.transform = 'translateX(-50%)';
+  }
+  
+  // Show preview
+  navPreview.classList.add('show');
+}
+
+// Function to hide preview
+function hideNavPreview() {
+  if (navPreview) {
+    navPreview.classList.remove('show');
+  }
+}
+
+// Add hover event listeners to desktop nav links
+document.querySelectorAll('.nav-desktop .nav-link').forEach(link => {
+  link.addEventListener('mouseenter', () => {
+    showNavPreview(link);
+  });
+  
+  link.addEventListener('mouseleave', () => {
+    hideNavPreview();
+  });
+});
+
+// Hide preview when mouse leaves nav area
+const navContent = document.querySelector('.nav-content');
+if (navContent) {
+  navContent.addEventListener('mouseleave', () => {
+    hideNavPreview();
+  });
+}
 
 // Add click handlers to buttons with data-section
 document.querySelectorAll('[data-section]').forEach(btn => {

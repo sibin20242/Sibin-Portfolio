@@ -424,6 +424,79 @@ main {
   box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
 }
 
+/* Navigation Preview */
+.nav-preview {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  width: 240px;
+  max-height: 150px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10002;
+  box-shadow: var(--shadow-xl), 0 0 30px hsl(var(--primary) / 0.2);
+  overflow: hidden;
+}
+
+.nav-preview.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-preview-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.nav-preview-image {
+  width: 100%;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-preview-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  border-radius: var(--radius-sm);
+}
+
+.nav-preview-title {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  text-align: center;
+}
+
+/* Position preview relative to hovered nav link */
+.nav-link {
+  position: relative;
+}
+
 .nav-cta-desktop {
   display: none;
   align-items: center;
@@ -811,6 +884,40 @@ main {
   background: linear-gradient(180deg, hsl(var(--background)), hsl(var(--background) / 0.95));
 }
 
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q50,50 100,100 T200,100' stroke='hsl(var(--primary))' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M0,50 Q60,20 120,50 T240,50' stroke='hsl(var(--secondary))' stroke-width='0.5' fill='none' opacity='0.06'/%3E%3Cpath d='M0,150 Q40,120 80,150 T160,150' stroke='hsl(var(--accent))' stroke-width='0.5' fill='none' opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 350px 350px;
+  background-repeat: repeat;
+  animation: moveCurves 40s linear infinite;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: 
+    linear-gradient(90deg, hsl(var(--primary) / 0.05) 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--primary) / 0.05) 1px, transparent 1px),
+    linear-gradient(45deg, hsl(var(--secondary) / 0.04) 1px, transparent 1px),
+    linear-gradient(-45deg, hsl(var(--accent) / 0.04) 1px, transparent 1px);
+  background-size: 
+    100px 100px,
+    100px 100px,
+    200px 200px,
+    200px 200px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -1129,7 +1236,7 @@ main {
 
 .hero-grid {
   position: relative;
-  z-index: 10;
+  z-index: 15;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;
@@ -1450,10 +1557,150 @@ main {
   }
 }
 
+/* Background Line Patterns */
+.section-bg-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.15;
+}
+
+/* Curved Lines Pattern */
+.bg-curved-lines {
+  background-image: 
+    radial-gradient(ellipse 800px 200px at 20% 30%, hsl(var(--primary) / 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse 600px 150px at 80% 70%, hsl(var(--secondary) / 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 400px 100px at 50% 50%, hsl(var(--accent) / 0.2) 0%, transparent 50%);
+  background-size: 100% 100%;
+  background-position: center;
+}
+
+.bg-curved-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q25,25 50,50 T100,50' stroke='hsl(var(--primary))' stroke-width='0.5' fill='none' opacity='0.2'/%3E%3Cpath d='M0,30 Q30,10 60,30 T120,30' stroke='hsl(var(--secondary))' stroke-width='0.5' fill='none' opacity='0.15'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  animation: moveCurves 20s linear infinite;
+}
+
+/* Cross/Straight Lines Pattern */
+.bg-cross-lines {
+  background-image: 
+    linear-gradient(90deg, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+    linear-gradient(45deg, hsl(var(--secondary) / 0.08) 1px, transparent 1px),
+    linear-gradient(-45deg, hsl(var(--accent) / 0.08) 1px, transparent 1px);
+  background-size: 
+    50px 50px,
+    50px 50px,
+    100px 100px,
+    100px 100px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+}
+
+.bg-cross-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 49px,
+      hsl(var(--primary) / 0.05) 49px,
+      hsl(var(--primary) / 0.05) 50px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 49px,
+      hsl(var(--primary) / 0.05) 49px,
+      hsl(var(--primary) / 0.05) 50px
+    );
+  background-size: 50px 50px;
+}
+
+/* Check/Grid Lines Pattern */
+.bg-check-lines {
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 24px,
+      hsl(var(--primary) / 0.08) 24px,
+      hsl(var(--primary) / 0.08) 25px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 24px,
+      hsl(var(--primary) / 0.08) 24px,
+      hsl(var(--primary) / 0.08) 25px
+    );
+  background-size: 50px 50px;
+}
+
+.bg-check-lines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(45deg, hsl(var(--secondary) / 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, hsl(var(--secondary) / 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, hsl(var(--accent) / 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, hsl(var(--accent) / 0.05) 75%);
+  background-size: 100px 100px;
+  background-position: 0 0, 0 0, 50px 50px, 50px 50px;
+}
+
+@keyframes moveCurves {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50px, 30px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 /* About Section */
 .about-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse 800px 200px at 20% 30%, hsl(var(--primary) / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 600px 150px at 80% 70%, hsl(var(--secondary) / 0.1) 0%, transparent 50%);
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.about-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q50,50 100,100 T200,100' stroke='hsl(var(--primary))' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3Cpath d='M0,50 Q60,20 120,50 T240,50' stroke='hsl(var(--secondary))' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M0,150 Q40,120 80,150 T160,150' stroke='hsl(var(--accent))' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  background-repeat: repeat;
+  animation: moveCurves 25s linear infinite;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .about-section .floating-equipment,
@@ -1465,9 +1712,22 @@ main {
 .contact-section .floating-equipment {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   overflow: hidden;
+}
+
+/* Ensure content appears above background lines */
+.about-section .container,
+.skills-section .container,
+.experience-section .container,
+.projects-section .container,
+.education-section .container,
+.certificates-section .container,
+.contact-section .container,
+.hero-section .container {
+  position: relative;
+  z-index: 10;
 }
 
 .about-grid {
@@ -1621,6 +1881,7 @@ main {
 .skills-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
   background: 
     radial-gradient(circle at 20% 50%, hsl(214 100% 55% / 0.05) 0%, transparent 20%),
     radial-gradient(circle at 80% 20%, hsl(189 100% 45% / 0.05) 0%, transparent 20%),
@@ -1628,15 +1889,40 @@ main {
   background-size: 200px 200px;
 }
 
+.skills-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(90deg, hsl(var(--primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--primary) / 0.08) 1px, transparent 1px),
+    linear-gradient(45deg, hsl(var(--secondary) / 0.06) 1px, transparent 1px),
+    linear-gradient(-45deg, hsl(var(--accent) / 0.06) 1px, transparent 1px);
+  background-size: 
+    60px 60px,
+    60px 60px,
+    120px 120px,
+    120px 120px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 980px;
   margin: 0 auto 4rem;
+  align-items: stretch;
 }
 
 .skill-category {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   padding: 2rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1728,6 +2014,14 @@ main {
   flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
 }
 
 .tech-stack {
@@ -1787,10 +2081,52 @@ main {
 .experience-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
   background: 
     radial-gradient(circle at 25% 25%, hsl(214 100% 55% / 0.1) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, hsl(260 85% 65% / 0.08) 0%, transparent 50%);
   background-size: 100px 100px;
+}
+
+.experience-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 29px,
+      hsl(var(--primary) / 0.06) 29px,
+      hsl(var(--primary) / 0.06) 30px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 29px,
+      hsl(var(--primary) / 0.06) 29px,
+      hsl(var(--primary) / 0.06) 30px
+    );
+  background-size: 60px 60px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.experience-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(45deg, hsl(var(--secondary) / 0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, hsl(var(--secondary) / 0.04) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, hsl(var(--accent) / 0.04) 75%),
+    linear-gradient(-45deg, transparent 75%, hsl(var(--accent) / 0.04) 75%);
+  background-size: 120px 120px;
+  background-position: 0 0, 0 0, 60px 60px, 60px 60px;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .experiences {
@@ -1976,10 +2312,25 @@ main {
 .projects-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
   background: 
     radial-gradient(circle at 0% 50%, transparent 20%, hsl(214 100% 55% / 0.03) 21%, hsl(214 100% 55% / 0.03) 34%, transparent 35%),
     linear-gradient(75deg, transparent 24%, hsl(189 100% 45% / 0.02) 25%, hsl(189 100% 45% / 0.02) 26%, transparent 27%);
   background-size: 60px 104px;
+}
+
+.projects-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,75 Q37.5,37.5 75,75 T150,75' stroke='hsl(var(--primary))' stroke-width='0.5' fill='none' opacity='0.12'/%3E%3Cpath d='M0,50 Q50,20 100,50 T200,50' stroke='hsl(var(--secondary))' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3Cpath d='M0,100 Q30,70 60,100 T120,100' stroke='hsl(var(--accent))' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 250px 250px;
+  background-repeat: repeat;
+  animation: moveCurves 30s linear infinite;
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 .projects-grid {
@@ -2155,11 +2506,32 @@ main {
 .education-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
   background: 
     radial-gradient(circle at 20% 50%, hsl(214 100% 55% / 0.05) 0%, transparent 20%),
     radial-gradient(circle at 80% 20%, hsl(189 100% 45% / 0.05) 0%, transparent 20%),
     radial-gradient(circle at 40% 80%, hsl(260 85% 65% / 0.05) 0%, transparent 20%);
   background-size: 200px 200px;
+}
+
+.education-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(90deg, hsl(var(--primary) / 0.07) 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--primary) / 0.07) 1px, transparent 1px),
+    linear-gradient(45deg, hsl(var(--secondary) / 0.05) 1px, transparent 1px),
+    linear-gradient(-45deg, hsl(var(--accent) / 0.05) 1px, transparent 1px);
+  background-size: 
+    70px 70px,
+    70px 70px,
+    140px 140px,
+    140px 140px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 .timeline {
@@ -2303,10 +2675,52 @@ main {
 .certificates-section {
   padding: 5rem 0;
   position: relative;
+  overflow: hidden;
   background: 
     radial-gradient(circle at 25% 25%, hsl(214 100% 55% / 0.1) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, hsl(260 85% 65% / 0.08) 0%, transparent 50%);
   background-size: 100px 100px;
+}
+
+.certificates-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 34px,
+      hsl(var(--primary) / 0.07) 34px,
+      hsl(var(--primary) / 0.07) 35px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 34px,
+      hsl(var(--primary) / 0.07) 34px,
+      hsl(var(--primary) / 0.07) 35px
+    );
+  background-size: 70px 70px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.certificates-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(45deg, hsl(var(--secondary) / 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, hsl(var(--secondary) / 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, hsl(var(--accent) / 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, hsl(var(--accent) / 0.05) 75%);
+  background-size: 140px 140px;
+  background-position: 0 0, 0 0, 70px 70px, 70px 70px;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .certificates-grid {
@@ -2424,6 +2838,35 @@ main {
   padding: 5rem 0;
   margin-top: auto;
   position: relative;
+  overflow: hidden;
+}
+
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='180' height='180' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,90 Q45,45 90,90 T180,90' stroke='hsl(var(--primary))' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3Cpath d='M0,60 Q54,24 108,60 T216,60' stroke='hsl(var(--secondary))' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M0,120 Q36,90 72,120 T144,120' stroke='hsl(var(--accent))' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  background-repeat: repeat;
+  animation: moveCurves 35s linear infinite;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.contact-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: 
+    linear-gradient(90deg, hsl(var(--primary) / 0.06) 1px, transparent 1px),
+    linear-gradient(0deg, hsl(var(--primary) / 0.06) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: 0 0, 0 0;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .contact-grid {
@@ -2667,6 +3110,10 @@ main {
 }
 
 /* Original icon colors for each platform */
+.social-link[href*="github"] .social-icon-wrapper i {
+  color: #ffffff;
+}
+
 .social-link[href*="linkedin"] .social-icon-wrapper i {
   color: #0077b5;
 }
